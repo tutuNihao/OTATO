@@ -1,0 +1,213 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://www.huangwx.cn/css/sweetalert.css">
+    <script type="text/javascript" src="https://www.huangwx.cn/js/sweetalert-dev.js"></script>
+</head>
+<body>
+<style type="text/css">
+    table{width:700px;height:700px;margin-left: 20%}
+    td{border:1px solid #ccc;width:100px;height:100px;}
+    .black{
+        width:100px;
+        height:100pX;
+        background-color:#8ea065;
+        border:solid 1px black;
+        border-radius:100px;
+        cursor:pointer;
+        text-align: center;
+ 
+    }
+    .red{
+        width:100pX;
+        height:100pX;
+        background-color:red;
+        border:solid 1px red;
+        border-radius:100pX;
+        cursor:pointer;
+        text-align: center;
+ 
+    }
+    .bin{
+        font-size:60px;
+    }
+</style>
+ 
+ 
+<table>
+    <tr>
+        <td id="11" align="center"><div name="bin" class="black"><span class="bin">兵</span></div></td>
+        <td id="12" align="center"><div name="bin" class="black"><span class="bin">兵</span></div></td>
+        <td id="13" align="center"><div name="bin" class="black"><span class="bin">兵</span></div></td>
+        <td id="14" align="center"><div name="bin" class="black"><span class="bin">兵</span></div></td>
+        <td id="15" align="center"><div name="bin" class="black"><span class="bin">兵</span></div></td>
+    </tr>
+    <tr>
+        <td id="21" align="center"><div name="bin" class="black"><span class="bin">兵</span></div></td>
+        <td id="22" align="center"><div name="bin" class="black"><span class="bin">兵</span></div></td>
+        <td id="23" align="center"><div name="bin" class="black"><span class="bin">兵</span></div></td>
+        <td id="24" align="center"><div name="bin" class="black"><span class="bin">兵</span></div></td>
+        <td id="25" align="center"><div name="bin" class="black"><span class="bin">兵</span></div></td>
+    </tr>
+    <tr>
+        <td id="31" align="center"><div name="bin" class="black"><span class="bin">兵</span></div></td>
+        <td id="32" align="center"><div name="bin" class="black"><span class="bin">兵</span></div></td>
+        <td id="33" align="center"><div name="bin" class="black"><span class="bin">兵</span></div></td>
+        <td id="34" align="center"><div name="bin" class="black"><span class="bin">兵</span></div></td>
+        <td id="35" align="center"><div name="bin" class="black"><span class="bin">兵</span></div></td>
+    </tr>
+    <tr>
+        <td id="41"></td>
+        <td id="42"></td>
+        <td id="43"></td>
+        <td id="44"></td>
+        <td id="45"></td>
+    </tr>
+    <tr>
+        <td id="51" align="center"><div disabled="disabled"   name="pao" class="red"><span class="bin">炮</span></div></td>
+        <td id="52" align="center"></td>
+        <td id="53" align="center"><div   name="pao" class="red"><span class="bin">炮</span></div></td>
+        <td id="54" align="center"></td>
+        <td id="55" align="center"><div   name="pao" class="red"><span class="bin">炮</span></div></td>
+    </tr>
+</table>
+ 
+<script type="text/javascript">
+    //$('#uid').attr("disabled","");
+    //$('#uid').attr("disabled",false);
+    //.removeAttr("disabled");
+    $(function(){
+ 
+        //页面加载完毕后开始执行的事件
+        var now_action="";//棋子选中标志
+        var tmp_html="";  //渲染移动的棋子
+        var $tmp_obj="";  //被选中的元素
+        var old_x=0;      //被选中的元素的x坐标
+        var old_y=0;      //被选中的元素的y坐标
+        var new_x=0;      //棋子落下时元素的x坐标
+        var new_y=0;      //棋子落下时元素的y坐标
+        var this_identity="" //第二次点击时棋子的身份
+        var old_identity=""; //第一次点击时棋子的身份
+        $("td").click(function(){
+            var this_html=$(this).html();
+            //swal("开始这个完美的弹出框旅程吧！");
+            if(now_action=="") {
+                if(this_html==""){return false;}
+                //首次点击棋子 赋值
+                now_action="pick_up";
+                tmp_html=this_html;
+                $tmp_obj=$(this);
+                $tmp_obj.css("background-color","#ccc");
+                new_x=$(this)[0].offsetLeft;
+                new_y=$(this)[0].offsetTop;
+                if($(this).find("div").length>0){
+                    this_identity =  $(this).find("div")[0].getAttribute("name");
+                }else {
+                    this_identity=""
+                }
+            }else if(now_action=="pick_up") {
+                //落下
+                //1.兵只能移动一个单位长度100px,炮吃兵可以移动两个单位，否则只能移动一个单位
+                //2.兵旁边有单位时不可以移动
+                old_x=new_x;
+                old_y=new_y;
+                old_identity=this_identity;
+                if($(this).find("div").length>0){
+                    this_identity =  $(this).find("div")[0].getAttribute("name");
+                }else {
+                    this_identity=""
+                }
+                new_x=$(this)[0].offsetLeft;
+                new_y=$(this)[0].offsetTop;
+                var hang =Math.abs(new_x-old_x);
+                var lie =Math.abs(new_y-old_y);
+                var logs =hang*lie;
+                if(old_x ==new_x && old_y==new_y){return false; }//自己不能吃自己
+                if(old_identity=='bin' ){
+                    if(this_identity=='bin'||this_identity=='pao'){
+                        $tmp_obj.css("background-color","white");
+                        now_action="";
+                        //swal("小兵不可以攻击");
+                        //alert("小兵不可以攻击");
+                        return false;
+                    }//兵不可以吃其他的子
+                    if(hang>150 || lie>150 || logs>140){
+                        console.log(new_x);
+                        $tmp_obj.css("background-color","white");
+                        now_action="";
+                        swal("小兵只能移动一格");
+                        //alert("小兵只能移动一格");
+                        return false;
+                    } //兵只能移动一格
+                }
+                if(old_identity=='pao'){
+                    if(this_identity=='pao'){//炮不可以吃炮
+                        $tmp_obj.css("background-color","white");
+                        now_action="";
+                        swal("炮不可以攻击炮");
+                        //alert("小兵不可以攻击");
+                        return false;
+                    } else if(this_identity=='bin'){//吃掉兵需要空出一格，少于一格或者多余一格均需返回
+                        //对角线问题  lie 279   hang=280
+                        if(logs>100){
+                            $tmp_obj.css("background-color","white");
+                            now_action="";
+                            swal("大炮只能直线攻击");
+                            return false;
+                        }else {
+ 
+                            if(hang>300 || lie>300 ||(hang<=150 && lie==0) ||(lie<=150 &&hang==0)){
+                                $tmp_obj.css("background-color","white");
+                                now_action="";
+                                swal("大炮的射程是2格");
+                                return false;
+                            }else {
+                              var new_id=  $(this)[0].getAttribute("id");
+                              var old_id=  $tmp_obj[0].getAttribute("id");
+                              var zhong_id =parseInt(Number(new_id)+ Number(old_id))/2;
+                              if((hang>=150 && lie==0) ||(lie>=150 &&hang==0)){
+                                  if($("#"+zhong_id).find('div').length>0){
+                                      $tmp_obj.css("background-color","white");
+                                      now_action="";
+                                      swal("大炮需要一格的射击空间");
+                                      return false;
+                                  }
+                              }
+                            }
+                        }
+ 
+                    }else {
+                        //对角线问题
+                        if(logs>100){
+                            $tmp_obj.css("background-color","white");
+                            now_action="";
+                            swal("大炮只能直线行走");
+                            return false;
+                        }else {
+                            if(hang>150 || lie>150){
+                                $tmp_obj.css("background-color","white");
+                                now_action="";
+                                swal("大炮只能行走一格");
+                                return false;
+                            }
+                        }
+                    }
+                }
+                $(this).html(tmp_html);
+                $(this).css("text-align", "center");
+                $(this).find("div").css("margin-left", "10%");
+                now_action="";
+                $tmp_obj.html("");
+                $tmp_obj.css("background-color","white");
+ 
+            }else {
+                alert("error");
+            }
+        });
+    });
+</script>
+</body>
+</html>
