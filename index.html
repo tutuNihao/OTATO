@@ -1,11 +1,289 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<title>我的第一个网站</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的第一个网站 - 新增按钮</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            background: linear-gradient(to right, #ff8a00, #da1b60);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0% { background-position: -200%; }
+            100% { background-position: 200%; }
+        }
+        
+        p {
+            font-size: 1.4rem;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+        
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .jump-button {
+            display: inline-block;
+            padding: 18px 45px;
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            min-width: 300px;
+            text-align: center;
+        }
+        
+        .jump-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(45deg, #ff4b2b, #ff416c);
+        }
+        
+        .jump-button:active {
+            transform: translateY(0) scale(0.98);
+        }
+        
+        .jump-button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: -1;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.5s ease;
+        }
+        
+        .jump-button:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        
+        .jump-button i {
+            margin-left: 10px;
+            transition: transform 0.3s ease;
+        }
+        
+        .jump-button:hover i {
+            transform: translateX(5px);
+        }
+        
+        .explanation {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 40px;
+            text-align: left;
+        }
+        
+        .explanation h2 {
+            margin-bottom: 15px;
+            color: #ffcc00;
+        }
+        
+        .explanation ul {
+            padding-left: 20px;
+        }
+        
+        .explanation li {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        
+        .explanation code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            p {
+                font-size: 1.2rem;
+            }
+            
+            .jump-button {
+                font-size: 1.3rem;
+                padding: 15px 35px;
+                min-width: 250px;
+            }
+        }
+        
+        .firework {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+        }
+    </style>
 </head>
 <body>
-<h1>欢迎来到我的网站</h1>
-<p>这是我的第一个静态网站。</p>
+    <div class="container">
+        <h1>欢迎来到我的网站</h1>
+        <p>这是我的第一个静态网站，现在添加了跳转按钮功能！</p>
+        
+        <div class="button-container">
+            <a href="https://tutunihao.github.io/3%20Cannons%20and%2015%20Soldiers/" class="jump-button">
+                点击查看精彩内容 <i>→</i>
+            </a>
+            
+            <a href="https://tutunihao.github.io/3%20Cannons%20and%2015%20Soldiers/" class="jump-button" style="background: linear-gradient(45deg, #00c9ff, #92fe9d);">
+                另一个样式按钮 <i>★</i>
+            </a>
+        </div>
+        
+        <div class="explanation">
+            <h2>按钮实现说明</h2>
+            <p>我已为您的网站添加了跳转按钮，以下是实现细节：</p>
+            <ul>
+                <li>使用 <code>&lt;a&gt;</code> 标签创建超链接按钮</li>
+                <li>添加了CSS样式使按钮美观且具有交互效果</li>
+                <li>实现了悬停动画、渐变背景和阴影效果</li>
+                <li>按钮链接指向：<code>https://tutunihao.github.io/3%20Cannons%20and%2015%20Soldiers/</code></li>
+                <li>添加了响应式设计，适配各种屏幕尺寸</li>
+                <li>提供了两个不同样式的按钮作为示例</li>
+            </ul>
+            <p>您可以根据需要调整按钮样式或位置，只需修改CSS即可。</p>
+        </div>
+    </div>
+
+    <script>
+        // 点击按钮时创建烟花效果
+        document.querySelectorAll('.jump-button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // 创建烟花效果
+                createFireworks(this);
+                
+                // 0.8秒后跳转页面
+                setTimeout(() => {
+                    window.location.href = this.href;
+                }, 800);
+            });
+        });
+        
+        function createFireworks(button) {
+            const buttonRect = button.getBoundingClientRect();
+            const centerX = buttonRect.left + buttonRect.width / 2;
+            const centerY = buttonRect.top + buttonRect.height / 2;
+            
+            const colors = ['#ff416c', '#ff4b2b', '#00c9ff', '#92fe9d', '#ffcc00'];
+            
+            for (let i = 0; i < 30; i++) {
+                const firework = document.createElement('div');
+                firework.classList.add('firework');
+                
+                // 随机颜色
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                firework.style.backgroundColor = color;
+                
+                // 随机大小
+                const size = Math.random() * 4 + 2;
+                firework.style.width = `${size}px`;
+                firework.style.height = `${size}px`;
+                
+                // 初始位置
+                firework.style.left = `${centerX}px`;
+                firework.style.top = `${centerY}px`;
+                
+                document.body.appendChild(firework);
+                
+                // 随机方向
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.random() * 100 + 50;
+                const x = Math.cos(angle) * distance;
+                const y = Math.sin(angle) * distance;
+                
+                // 动画效果
+                firework.animate([
+                    { transform: 'translate(0, 0)', opacity: 1 },
+                    { transform: `translate(${x}px, ${y}px)`, opacity: 0 }
+                ], {
+                    duration: 800,
+                    easing: 'cubic-bezier(0.1, 0.8, 0.2, 1)',
+                    fill: 'forwards'
+                });
+                
+                // 动画结束后移除元素
+                setTimeout(() => {
+                    firework.remove();
+                }, 800);
+            }
+        }
+    </script>
 </body>
 </html>
